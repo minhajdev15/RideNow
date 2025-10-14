@@ -13,8 +13,7 @@ import { useState } from "react";
 
 
 // Get your key from: https://console.cloud.google.com/google/maps-apis
-const GOOGLE_MAPS_API_KEY = 'YOUR_API_KEY_HERE';
-
+const GOOGLE_MAPS_API_KEY = 'AIzaSyDr7aof3Sp34NuVRygd2viLyLMSxlg1P8A'
 export default function Home() {
     const [fromAddress, setFromAddress] = useState('');
   const [toAddress, setToAddress] = useState('');
