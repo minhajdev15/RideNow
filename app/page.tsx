@@ -7,13 +7,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, MapPin, Navigation } from "lucide-react";
-import { toast } from "sonner"
-import Image from "next/image";
+import { toast } from "sonner";
 import { useState } from "react";
 
 
 // Get your key from: https://console.cloud.google.com/google/maps-apis
-const GOOGLE_MAPS_API_KEY = 'YOUR_API_KEY_HERE';
+const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+console.log("API Key:", GOOGLE_MAPS_API_KEY);
 
 export default function Home() {
     const [fromAddress, setFromAddress] = useState('');
@@ -50,7 +50,7 @@ export default function Home() {
   const hasRoute = fromLocation && toLocation;
 
   return (
-    <GoogleMapsLoader apiKey={GOOGLE_MAPS_API_KEY}>
+    <GoogleMapsLoader apiKey={GOOGLE_MAPS_API_KEY!}>
       <div className="min-h-screen bg-gradient-hero">
         {/* Header */}
         <header className="border-b bg-card/50 backdrop-blur-sm">
