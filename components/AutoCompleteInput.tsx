@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { MapPin } from 'lucide-react';
@@ -24,11 +24,32 @@ const AutocompleteInput = ({
 }: AutocompleteInputProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+  const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
+
+  // Check if Google Maps API is loaded
+  useEffect(() => {
+    const checkGoogleMaps = () => {
+      if (window.google?.maps?.places?.Autocomplete) {
+        setIsGoogleLoaded(true);
+      } else {
+        // Retry after a short delay
+        setTimeout(checkGoogleMaps, 100);
+      }
+    };
+
+    checkGoogleMaps();
+  }, []);
 
   useEffect(() => {
-    if (!inputRef.current || !window.google) return;
+    if (!inputRef.current || !isGoogleLoaded || !window.google?.maps?.places?.Autocomplete) return;
 
-    // Initialize Google Places Autocomplete
+    // Check if PlaceAutocompleteElement is available (new API)
+    if (window.google?.maps?.places?.PlaceAutocompleteElement) {
+      // Use new API when available
+      console.warn('Using deprecated Autocomplete API. Consider upgrading to PlaceAutocompleteElement for new projects.');
+    }
+
+    // Initialize Google Places Autocomplete (keeping current implementation)
     autocompleteRef.current = new google.maps.places.Autocomplete(inputRef.current, {
       types: ['geocode'],
       fields: ['formatted_address', 'geometry', 'name'],
@@ -48,7 +69,7 @@ const AutocompleteInput = ({
         google.maps.event.clearInstanceListeners(autocompleteRef.current);
       }
     };
-  }, [onPlaceSelected, onChange]);
+  }, [isGoogleLoaded, onPlaceSelected, onChange]);
 
   return (
     <div className="space-y-2">
