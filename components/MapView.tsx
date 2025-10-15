@@ -65,6 +65,7 @@ const MapView = ({ fromLocation, toLocation, onDistanceCalculated }: MapViewProp
 
           // Calculate and display distance
           const route = result.routes[0];
+          console.log(result)
           if (route && route.legs[0]) {
             const distance = route.legs[0].distance?.text || '';
             onDistanceCalculated?.(distance);
