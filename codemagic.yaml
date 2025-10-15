@@ -1,0 +1,53 @@
+workflows:
+  build_ios:
+    name: Build iOS app (Next.js + Capacitor)
+    environment:
+      node: 20
+      xcode: 15.3
+      vars:
+        APP_NAME: "RideNow"
+
+    scripts:
+      # 1️⃣ Install dependencies
+      - name: Install dependencies
+        script: |
+          npm install -g pnpm
+          pnpm install
+
+      # 2️⃣ Build Next.js app
+      - name: Build Next.js for production
+        script: |
+          pnpm run build
+          pnpm run export
+          mkdir -p ios/App/public
+          cp -r out/* ios/App/public/
+
+      # 3️⃣ Sync Capacitor for iOS
+      - name: Sync Capacitor
+        script: |
+          pnpm cap sync ios
+
+      # 4️⃣ Install CocoaPods dependencies
+      - name: Install iOS Pods
+        script: |
+          cd ios
+          pod install
+          cd ..
+
+      # 5️⃣ Build unsigned iOS app (for simulator)
+      - name: Build unsigned iOS app
+        script: |
+          cd ios
+          xcodebuild \
+            -workspace App.xcworkspace \
+            -scheme App \
+            -sdk iphonesimulator \
+            -configuration Release \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            DEVELOPMENT_TEAM="" \
+            build
+
+    artifacts:
+      - ios/build/Build/Products/Release-iphonesimulator/*.app
