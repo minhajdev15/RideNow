@@ -1,0 +1,8 @@
+{
+  "name": "ride-now",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom",
+  "id": "c4c2af3c"
+}
