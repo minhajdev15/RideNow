@@ -1,19 +1,17 @@
 "use client"
-
 import AutocompleteInput from "@/components/AutoCompleteInput";
 import GoogleMapsLoader from "@/components/GoogleMapsLoader";
 import MapView from "@/components/MapView";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, MapPin, Navigation } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
 
 
-// Get your key from: https://console.cloud.google.com/google/maps-apis
+
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-console.log("API Key:", GOOGLE_MAPS_API_KEY);
+
 
 export default function Home() {
     const [fromAddress, setFromAddress] = useState('');
@@ -37,13 +35,6 @@ export default function Home() {
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng(),
       });
-    }
-  };
-
-  const handleShowRoute = () => {
-    // Route will be calculated automatically when both locations are set
-    if (!fromLocation || !toLocation) {
-      toast.error('Please select both pickup and dropoff locations');
     }
   };
 
@@ -109,15 +100,7 @@ export default function Home() {
                   />
                 </div>
 
-                <Button
-                  onClick={handleShowRoute}
-                  disabled={!fromAddress || !toAddress}
-                  className="w-full bg-gradient-primary hover:opacity-90 transition-opacity"
-                  size="lg"
-                >
-                  Show Route
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                
               </CardContent>
             </Card>
 
